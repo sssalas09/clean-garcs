@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cognitive Sanctuary – Lexile Predictor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --primary: #00675b;
+  --primary-dim: #005a4f;
+  --primary-container: #99ecdb;
+  --on-primary: #c1fff1;
+  --on-primary-container: #00594e;
+  --secondary: #2a5e91;
+  --secondary-container: #b3d4ff;
+  --on-secondary-container: #0c4a7b;
+  --tertiary-container: #e9fe90;
+  --on-tertiary-container: #526200;
+  --surface: #d4fffb;
+  --surface-container: #adf5f1;
+  --surface-container-low: #bafdf9;
+  --surface-container-high: #a2f1ec;
+  --surface-container-highest: #96ece7;
+  --surface-container-lowest: #ffffff;
+  --on-surface: #003533;
+  --on-surface-variant: #296462;
+  --outline: #47807d;
+  --outline-variant: #7db8b4;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--surface);
+  color: var(--on-surface);
+  min-height: 100vh;
+  margin: 0;
+}
+.headline { font-family: 'Lexend', sans-serif; }
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+.card {
+  background: var(--surface-container-lowest);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(0,53,51,0.06);
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: 9999px;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 700;
+  padding: 0.9rem 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover { background: var(--primary-dim); transform: scale(0.98); }
+.btn-primary:disabled {
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--on-surface);
+  border: 2px solid var(--outline);
+  border-radius: 9999px;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-outline:hover { background: var(--surface-container-low); }
+.choice-btn {
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 2px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.choice-btn:hover { background: var(--surface-container-low); border-color: var(--primary); }
+.choice-btn.selected { background: var(--primary-container); border-color: var(--primary); font-weight: 600; }
+.grade-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 2px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--on-surface);
+}
+.grade-chip.selected { background: var(--secondary-container); border-color: var(--secondary); color: var(--secondary); }
+.progress-bar { height: 6px; background: var(--surface-container-high); border-radius: 9999px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary); border-radius: 9999px; transition: width 0.4s ease; }
+.name-input {
+  width: 100%;
+  padding: 0.9rem 1.125rem;
+  border-radius: 1rem;
+  border: 2px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.name-input:focus { border-color: var(--primary); background: white; }
+.name-input::placeholder { color: var(--outline-variant); }
+
+@keyframes fadeInUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes scaleIn { from { opacity:0; transform:scale(0.6); } to { opacity:1; transform:scale(1); } }
+@keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes spinA { to { transform: rotate(360deg); } }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes treeActivate { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+.fade-in-up { animation: fadeInUp 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+.scale-in { animation: scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.slide-up { animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+.spinner { animation: spinA 1s linear infinite; }
+.blink { animation: blink 1.5s ease-in-out infinite; }
+.tree-activate { animation: treeActivate 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+.stagger-1 { animation-delay: 0.05s; opacity:0; }
+.stagger-2 { animation-delay: 0.1s; opacity:0; }
+.stagger-3 { animation-delay: 0.15s; opacity:0; }
+.stagger-4 { animation-delay: 0.2s; opacity:0; }
+
+.lexile-ring {
+  stroke-dasharray: 440;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+</style>
+</head>
+<body>
+<div id="app" style="max-width:580px;margin:0 auto;padding:1.5rem;padding-bottom:5rem;"></div>
+
+<script>
+// ============================================================
+// DATA — PASSAGES & QUESTIONS
+// ============================================================
+const passages = [
+  {
+    id:'easy', grades:[3,4,5], difficulty:0,
+    title:"Mia's Tide Pool Adventure",
+    genre:"Nature", genreEmoji:"🌊",
+    wordCount:165,
+    readMinutes:"3–4",
+    text:`Mia had never seen so many creatures in one small pool of water. Her grandmother knelt beside her on the rocky shore, pointing to a bright orange sea star clinging to the side of the pool.
+
+"You have to look carefully," Grandma said. "Tide pool creatures are experts at hiding."
+
+Mia leaned in closer. She could see a tiny hermit crab dragging its borrowed shell across the sandy bottom. A sea anemone waved its purple fingers gently in the water. When Mia's shadow fell over the pool, the anemone folded shut immediately.
+
+"Why did it do that?" Mia asked.
+
+"It thought your shadow was a predator," Grandma explained. "Anemones are sensitive to changes in light. It's how they protect themselves."
+
+Mia sat very still and watched. After a few moments, the anemone slowly opened again. A tiny fish darted between the rocks, and a cluster of mussels clung together in a tight group near the edge.
+
+"I never knew there was so much life down here," Mia said softly.
+
+Grandma smiled. "The ocean is full of surprises. You just have to know how to look."
+
+That evening, Mia filled three pages of her notebook with sketches and observations. She had decided to become a marine biologist.`,
+    questions:[
+      { type:'literal', q:"Where does the story take place?",
+        choices:["In an aquarium","At a rocky shore with tide pools","In Mia's backyard","At a science museum"], correct:1 },
+      { type:'literal', q:"Why did the sea anemone suddenly fold shut?",
+        choices:["It was sleeping","A predator bit it","Mia's shadow looked like a threat","The water turned cold"], correct:2 },
+      { type:'inferential', q:"What can you infer about Mia based on the ending of the story?",
+        choices:["She was disappointed by what she found","She became deeply curious about ocean life","She was afraid of the creatures","She wanted to catch the hermit crab"], correct:1 },
+      { type:'vocabulary', q:"In the passage, 'predator' most likely means:",
+        choices:["A large ocean wave","An animal that hunts and eats other animals","A type of fishing tool","A shadow cast on water"], correct:1 },
+      { type:'main_idea', q:"What is the main message of this passage?",
+        choices:["Tide pools are dangerous places","Grandmothers always know everything about science","Paying close attention to nature reveals hidden wonders","Marine biologists study sea anemones every day"], correct:2 }
+    ]
+  },
+  {
+    id:'medium', grades:[6,7,8], difficulty:1,
+    title:"The Code Breakers of Bletchley Park",
+    genre:"History", genreEmoji:"📜",
+    wordCount:195,
+    readMinutes:"4–5",
+    text:`During World War II, a quiet English estate called Bletchley Park became one of the most important secrets of the Allied forces. Inside its huts and converted buildings, a remarkable group of mathematicians, linguists, and puzzle enthusiasts worked around the clock to break the encrypted communications of Nazi Germany.
+
+The Germans relied on a sophisticated machine called Enigma to encode their military messages. With billions of possible settings, Enigma-generated codes seemed mathematically unbreakable. German commanders were so confident in its security that they transmitted detailed military plans over open radio waves without concern.
+
+That confidence proved fatal. A British mathematician named Alan Turing, along with his colleagues, developed an electromechanical device called the Bombe. By exploiting predictable patterns in German messages — such as standardized weather reports and repeated phrases — Turing's team could narrow down Enigma's countless combinations and crack daily codes within hours.
+
+Historians estimate that the work at Bletchley Park shortened World War II by two to four years, potentially saving millions of lives. Yet the code breakers could not celebrate publicly. Their work remained classified for decades. Many lived out their lives without ever being recognized for one of history's greatest intellectual achievements.`,
+    questions:[
+      { type:'literal', q:"What was Bletchley Park?",
+        choices:["A German military base","A British site for code-breaking operations","A type of encryption machine","An Allied naval command station"], correct:1 },
+      { type:'literal', q:"What device did Alan Turing's team develop to crack Enigma?",
+        choices:["The Colossus","The Bombe","The Cipher Engine","The Decoder"], correct:1 },
+      { type:'inferential', q:"Why couldn't the code breakers publicly celebrate their success?",
+        choices:["They were embarrassed by their work","Their operations were kept secret for national security","They weren't sure the war was truly over","They disagreed about who deserved credit"], correct:1 },
+      { type:'vocabulary', q:"The word 'classified' as used in the passage most nearly means:",
+        choices:["Organized into categories","Kept secret by the government","Printed in official textbooks","Formally recognized by leaders"], correct:1 },
+      { type:'main_idea', q:"What is the central idea of this passage?",
+        choices:["Alan Turing was a world-famous mathematician","The Enigma machine was impossible to crack manually","Bletchley Park's secret intelligence work significantly influenced World War II","The Allies were better at mathematics than the Germans"], correct:2 }
+    ]
+  },
+  {
+    id:'hard', grades:[9,10,11,12], difficulty:2,
+    title:"The Neuroplasticity Revolution",
+    genre:"Science", genreEmoji:"🧠",
+    wordCount:210,
+    readMinutes:"5–7",
+    text:`For most of scientific history, the brain was considered a static organ — a biological machine whose fundamental architecture was largely fixed by early adulthood. By the twentieth century, this dogma had become so entrenched that neuroscientists rarely questioned it. The brain you developed as a child, prevailing theory held, was essentially the brain you would carry to your grave.
+
+Modern neuroscience has dismantled this assumption with remarkable force. Research over the past four decades has demonstrated that the brain possesses extraordinary plasticity: the capacity to reorganize its synaptic connections, generate new neural pathways, and even, in limited circumstances, produce new neurons through a process called neurogenesis. This restructuring occurs in response to learning, environmental stimulation, injury, and sustained behavioral change.
+
+The implications are profound and far-reaching. In rehabilitation medicine, neuroplasticity underpins therapies for stroke victims, whose brains can sometimes reroute functions around damaged regions. In education, it validates the principle that deliberate practice and deep engagement — rather than innate talent alone — can fundamentally alter cognitive capacity. In psychiatry, it offers a biological explanation for why cognitive-behavioral therapy produces measurable structural changes in the brain.
+
+Critics caution against overinterpreting the evidence. Plasticity is not unlimited; it diminishes significantly with age, and the precise mechanisms remain incompletely understood. Nevertheless, the paradigm shift has been irreversible. We now understand the brain not as a fixed instrument, but as a dynamic system — perpetually sculpted by experience, and never truly finished.`,
+    questions:[
+      { type:'literal', q:"What did scientists traditionally believe about the adult brain?",
+        choices:["It could grow and expand throughout life","Its structure was largely fixed after early childhood","It produced large numbers of new neurons constantly","It became more adaptable with age"], correct:1 },
+      { type:'literal', q:"What is 'neurogenesis' as described in the passage?",
+        choices:["The reorganization of synaptic connections","The process of producing new neurons","A rehabilitation therapy for stroke victims","A type of experimental brain surgery"], correct:1 },
+      { type:'inferential', q:"Why does the author mention that critics 'caution against overinterpreting the evidence'?",
+        choices:["To suggest neuroplasticity is a myth","To present a balanced view of a complex scientific topic","To argue that older theories were correct all along","To discourage further research into the field"], correct:1 },
+      { type:'vocabulary', q:"As used in the passage, 'paradigm shift' most nearly means:",
+        choices:["A minor adjustment to an existing theory","A complete change in the fundamental way something is understood","A specific type of brain reorganization","A shift in political or public opinion"], correct:1 },
+      { type:'main_idea', q:"Which statement best captures the central argument of this passage?",
+        choices:["Neuroplasticity research has important limitations that scientists must acknowledge","The brain is a fixed biological structure that does not change after childhood","Recent discoveries have transformed our understanding of the brain as a dynamic, adaptable system","Cognitive behavioral therapy is currently the most important use of neuroplasticity research"], correct:2 }
+    ]
+  }
+];
+
+// ============================================================
+// RANDOM FOREST CLASSIFIER — 11 Decision Trees
+// ============================================================
+function extractFeatures(answers, passage, readingMs) {
+  const qs = passage.questions;
+  const correct = answers.map((a,i) => a === qs[i].correct);
+  const lit  = (correct[0] ? 1:0) + (correct[1] ? 1:0);
+  const lit_acc  = lit / 2;
+  const inf_acc  = correct[2] ? 1 : 0;
+  const voc_acc  = correct[3] ? 1 : 0;
+  const mid_acc  = correct[4] ? 1 : 0;
+  const overall  = correct.filter(Boolean).length / 5;
+  const readSec  = readingMs / 1000;
+  const time_f   = Math.min(1, Math.max(0, (readSec - 20) / 160));
+  return { lit_acc, inf_acc, voc_acc, mid_acc, overall, time_f, diff: passage.difficulty, correct };
+}
+
+// Each tree returns a band 0–5
+// 0=<400L  1=400-600L  2=600-800L  3=800-1000L  4=1000-1200L  5=>1200L
+const trees = [
+  // T1: Overall + difficulty
+  f => {
+    const b = f.diff;
+    if (f.overall >= 0.8) return Math.min(5, b+2);
+    if (f.overall >= 0.6) return Math.min(5, b+1);
+    if (f.overall >= 0.4) return b;
+    return Math.max(0, b-1);
+  },
+  // T2: Vocabulary depth
+  f => {
+    const b = f.diff;
+    if (f.voc_acc===1 && f.inf_acc===1) return Math.min(5, b+2);
+    if (f.voc_acc===1) return Math.min(5, b+1);
+    if (f.voc_acc===0 && f.lit_acc<0.5) return Math.max(0, b-1);
+    return b;
+  },
+  // T3: Inferential + main idea (deep comprehension)
+  f => {
+    const deep = (f.inf_acc + f.mid_acc) / 2;
+    const b = f.diff;
+    if (deep >= 1) return Math.min(5, b+2);
+    if (deep >= 0.5) return Math.min(5, b+1);
+    if (deep === 0) return Math.max(0, b-1);
+    return b;
+  },
+  // T4: Literal comprehension focus
+  f => {
+    const b = f.diff;
+    if (f.lit_acc < 0.5) return Math.max(0, b-1);
+    if (f.lit_acc >= 1 && f.overall >= 0.7) return Math.min(5, b+1);
+    return b;
+  },
+  // T5: Time factor bonus
+  f => {
+    const b = f.diff;
+    const tb = f.time_f > 0.45 ? 1 : 0;
+    const ab = f.overall >= 0.8 ? 1 : f.overall < 0.4 ? -1 : 0;
+    return Math.min(5, Math.max(0, b + ab + tb));
+  },
+  // T6: Weighted composite
+  f => {
+    const s = f.lit_acc*0.2 + f.inf_acc*0.3 + f.voc_acc*0.3 + f.mid_acc*0.2;
+    const b = f.diff;
+    if (s >= 0.8) return Math.min(5, b+2);
+    if (s >= 0.6) return Math.min(5, b+1);
+    if (s >= 0.4) return b;
+    return Math.max(0, b-1);
+  },
+  // T7: Difficulty-specific rules
+  f => {
+    if (f.diff===0) {
+      if (f.overall>=0.8) return 2; if (f.overall>=0.5) return 1; return 0;
+    } else if (f.diff===1) {
+      if (f.overall>=0.8) return 3; if (f.overall>=0.6) return 2; if (f.overall>=0.4) return 1; return 0;
+    } else {
+      if (f.overall>=0.8) return 4; if (f.overall>=0.6) return 3; if (f.overall>=0.4) return 2; return 1;
+    }
+  },
+  // T8: Vocab + Inferential combo
+  f => {
+    const d = (f.voc_acc + f.inf_acc) / 2;
+    const b = f.diff;
+    if (d >= 1) return Math.min(5, b+2);
+    if (d >= 0.5) return Math.min(5, b+1);
+    return Math.max(0, b - (d===0?1:0));
+  },
+  // T9: Normalized all-feature average
+  f => {
+    const avg = (f.lit_acc+f.inf_acc+f.voc_acc+f.mid_acc+f.time_f)/5;
+    const b = f.diff;
+    return Math.min(5, Math.max(0, b + Math.round(avg*2) - 1));
+  },
+  // T10: Penalize weak vocabulary heavily
+  f => {
+    const b = f.diff;
+    if (f.voc_acc===0 && f.inf_acc===0) return Math.max(0, b-1);
+    if (f.voc_acc===1 && f.mid_acc===1) return Math.min(5, b+2);
+    return b + (f.overall >= 0.6 ? 1 : 0);
+  },
+  // T11: High-performer detection
+  f => {
+    const b = f.diff;
+    const perfect = f.overall === 1;
+    const strong  = f.overall >= 0.8 && f.time_f > 0.3;
+    const weak    = f.overall < 0.4;
+    if (perfect) return Math.min(5, b+3);
+    if (strong)  return Math.min(5, b+2);
+    if (weak)    return Math.max(0, b-1);
+    return Math.min(5, b+1);
+  }
+];
+
+function runRandomForest(features) {
+  const votes = trees.map(t => t(features));
+  const counts = {};
+  votes.forEach(v => { counts[v] = (counts[v]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const band = parseInt(sorted[0][0]);
+
+  const lexileBases = [300, 500, 700, 860, 1100, 1300];
+  const ranges      = ['200L–400L','400L–600L','600L–800L','800L–1000L','1000L–1200L','1200L+'];
+  const labels      = ['Early Reader','Developing Reader','Intermediate Reader','Proficient Reader','Advanced Reader','Expert Reader'];
+  const gradeEqs    = ['Grades 1–3','Grades 3–5','Grades 5–7','Grades 7–9','Grades 9–11','Grades 11–12+'];
+  const colors      = ['#f59e0b','#3b82f6','#8b5cf6','#00675b','#059669','#0d9488'];
+  const bgColors    = ['#fef3c7','#dbeafe','#ede9fe','#d4fffb','#d1fae5','#ccfbf1'];
+
+  const offset = Math.round((features.overall - 0.5) * 90);
+  const lexile = Math.max(100, Math.min(1400, lexileBases[band] + offset));
+
+  const aspects = [
+    { name:'Literal Comprehension',  score:features.lit_acc, icon:'📖' },
+    { name:'Inferential Reasoning',  score:features.inf_acc, icon:'🧠' },
+    { name:'Vocabulary in Context',  score:features.voc_acc, icon:'📝' },
+    { name:'Main Idea & Purpose',    score:features.mid_acc, icon:'🎯' },
+  ];
+  aspects.sort((a,b)=>b.score-a.score);
+  const strengths  = aspects.slice(0,2).filter(a=>a.score>=0.5).map(a=>a.name);
+  const growthAreas= aspects.slice(-2).filter(a=>a.score<0.5).map(a=>a.name);
+
+  return { band, lexile, range:ranges[band], label:labels[band],
+           gradeEq:gradeEqs[band], color:colors[band], bgColor:bgColors[band],
+           votes, counts, features, strengths, growthAreas, aspects };
+}
+
+// ============================================================
+// APP STATE
+// ============================================================
+const state = {
+  screen: 'welcome',
+  name: '', grade: null, passage: null,
+  userId: null,
+  answers: [], currentQ: 0,
+  readingStart: null, readingEnd: null,
+  prediction: null
+};
+
+// ============================================================
+// RENDER ENGINE
+// ============================================================
+const app = document.getElementById('app');
+function render() {
+  const screens = {
+    welcome: renderWelcome, passage: renderPassage,
+    questions: renderQuestions, processing: renderProcessing,
+    results: renderResults
+  };
+  screens[state.screen]();
+}
+
+// ---------- HEADER COMPONENT ----------
+function headerHTML() {
+  return `<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;">
+    <div style="width:2.5rem;height:2.5rem;border-radius:50%;background:var(--primary-container);display:flex;align-items:center;justify-content:center;">
+      <span class="material-symbols-outlined" style="color:var(--primary);font-size:1.25rem;font-variation-settings:'FILL' 1;">auto_stories</span>
+    </div>
+    <span class="headline" style="font-size:1.25rem;font-weight:800;color:var(--primary);">Cognitive Sanctuary</span>
+  </div>`;
+}
+
+// ---------- WELCOME SCREEN ----------
+function renderWelcome() {
+  app.innerHTML = `<div class="fade-in-up">
+    ${headerHTML()}
+    <div style="background:linear-gradient(135deg,var(--primary-container),#b3f5ec);border-radius:1.5rem;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-1.5rem;top:-1.5rem;width:7rem;height:7rem;background:var(--primary);opacity:0.07;border-radius:50%;"></div>
+      <div style="position:absolute;right:3rem;bottom:-1.5rem;width:4rem;height:4rem;background:var(--primary);opacity:0.07;border-radius:50%;"></div>
+      <div style="font-size:2.75rem;margin-bottom:0.75rem;">📖</div>
+      <h1 class="headline" style="font-size:1.875rem;font-weight:800;color:var(--on-surface);line-height:1.2;margin-bottom:0.625rem;">Find Your Lexile Level</h1>
+      <p style="color:var(--on-surface-variant);font-size:0.875rem;line-height:1.7;max-width:90%;">Take a quick reading assessment and our AI predicts your Lexile score using a <strong>Random Forest</strong> classifier trained on comprehension patterns.</p>
+    </div>
+
+    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;">
+      <p class="headline" style="font-size:0.6875rem;font-weight:700;letter-spacing:0.08em;color:var(--on-surface-variant);margin-bottom:1rem;">HOW IT WORKS</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        ${[
+          ['📄','Read a passage','A short text matched to your grade level'],
+          ['✏️','Answer 5 questions','Literal, inferential, vocabulary & main idea'],
+          ['🤖','Get your Lexile','Our 11-tree Random Forest model predicts your score'],
+        ].map(([icon,title,desc])=>`<div style="display:flex;align-items:center;gap:0.875rem;">
+          <div style="width:2.75rem;height:2.75rem;border-radius:0.875rem;background:var(--surface-container);display:flex;align-items:center;justify-content:center;font-size:1.375rem;flex-shrink:0;">${icon}</div>
+          <div><div style="font-weight:700;font-size:0.875rem;">${title}</div><div style="color:var(--on-surface-variant);font-size:0.75rem;margin-top:0.125rem;">${desc}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;">
+      <label style="display:block;font-weight:700;font-size:0.875rem;margin-bottom:0.75rem;">What's your name?</label>
+      <input id="nameInput" class="name-input" type="text" placeholder="Enter your first name…" value="${state.name}" oninput="state.name=this.value"/>
+    </div>
+
+    <div class="card" style="padding:1.5rem;margin-bottom:2rem;">
+      <label style="display:block;font-weight:700;font-size:0.875rem;margin-bottom:0.875rem;">What grade are you in?</label>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="gradeChips">
+        ${[3,4,5,6,7,8,9,10,11,12].map(g=>`
+          <button class="grade-chip ${state.grade===g?'selected':''}" onclick="selectGrade(${g})">Grade ${g}</button>
+        `).join('')}
+      </div>
+    </div>
+
+    <button class="btn-primary" style="width:100%;font-size:1rem;" onclick="startAssessment()">
+      Start Assessment <span class="material-symbols-outlined" style="font-size:1.25rem;">arrow_forward</span>
+    </button>
+    <p style="text-align:center;color:var(--on-surface-variant);font-size:0.75rem;margin-top:0.875rem;">Takes about 5–10 minutes · No account needed</p>
+  </div>`;
+}
+
+// ---------- PASSAGE SCREEN ----------
+function renderPassage() {
+  const p = state.passage;
+  app.innerHTML = `<div class="fade-in-up">
+    ${headerHTML()}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;background:var(--surface-container-lowest);padding:0.5rem 0.875rem;border-radius:9999px;box-shadow:0 2px 8px rgba(0,53,51,0.06);">
+        <span class="material-symbols-outlined" style="color:var(--primary);font-size:1.125rem;">timer</span>
+        <span id="timer" class="headline" style="font-weight:700;color:var(--primary);font-size:0.9375rem;">0:00</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:0.375rem;background:var(--tertiary-container);color:var(--on-tertiary-container);padding:0.4rem 0.875rem;border-radius:9999px;font-size:0.75rem;font-weight:700;">
+        ${p.genreEmoji} ${p.genre}
+      </div>
+      <span style="font-size:0.75rem;color:var(--on-surface-variant);font-weight:600;">${p.wordCount} words</span>
+    </div>
+
+    <div class="card" style="padding:1.75rem;margin-bottom:1.25rem;">
+      <h2 class="headline" style="font-size:1.375rem;font-weight:800;line-height:1.3;margin-bottom:1.25rem;">${p.title}</h2>
+      <div style="font-size:0.9375rem;line-height:1.85;color:var(--on-surface);">
+        ${p.text.split('\n\n').map(para=>`<p style="margin-bottom:1rem;">${para}</p>`).join('')}
+      </div>
+    </div>
+
+    <div style="background:var(--surface-container);border-radius:1rem;padding:0.875rem 1.125rem;margin-bottom:1.25rem;display:flex;gap:0.75rem;align-items:flex-start;">
+      <span style="font-size:1.125rem;flex-shrink:0;">💡</span>
+      <p style="font-size:0.8125rem;color:var(--on-surface-variant);line-height:1.6;margin:0;">Read carefully — you'll answer questions about the details, inferences, vocabulary, and main ideas in this passage.</p>
+    </div>
+
+    <button class="btn-primary" style="width:100%;font-size:1rem;" onclick="goToQuestions()">
+      I'm Ready — Answer Questions <span class="material-symbols-outlined" style="font-size:1.25rem;">quiz</span>
+    </button>
+  </div>`;
+
+  // Timer
+  const t0 = Date.now();
+  state.readingStart = t0;
+  const iv = setInterval(() => {
+    if (state.screen !== 'passage') { clearInterval(iv); return; }
+    const el = document.getElementById('timer');
+    if (!el) { clearInterval(iv); return; }
+    const s = Math.floor((Date.now()-t0)/1000);
+    el.textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  }, 1000);
+}
+
+// ---------- QUESTIONS SCREEN ----------
+function renderQuestions() {
+  const q = state.passage.questions[state.currentQ];
+  const pct = (state.currentQ / state.passage.questions.length) * 100;
+  const sel = state.answers[state.currentQ] !== undefined ? state.answers[state.currentQ] : null;
+  const typeMeta = {
+    literal:   { label:'📖 Literal',   bg:'var(--secondary-container)', color:'var(--on-secondary-container)' },
+    inferential:{ label:'🧠 Inferential', bg:'#ede9fe', color:'#5b21b6' },
+    vocabulary: { label:'📝 Vocabulary', bg:'var(--tertiary-container)', color:'var(--on-tertiary-container)' },
+    main_idea:  { label:'🎯 Main Idea',  bg:'#fce7f3', color:'#9d174d' },
+  };
+  const tm = typeMeta[q.type] || typeMeta.literal;
+  const isLast = state.currentQ === state.passage.questions.length - 1;
+
+  app.innerHTML = `<div class="fade-in-up">
+    ${headerHTML()}
+    <div style="margin-bottom:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <span style="font-size:0.75rem;font-weight:700;color:var(--on-surface-variant);">Question ${state.currentQ+1} of ${state.passage.questions.length}</span>
+        <span style="font-size:0.75rem;font-weight:700;color:var(--primary);">${Math.round(pct)}% complete</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+
+    <div style="display:inline-flex;align-items:center;background:${tm.bg};color:${tm.color};padding:0.375rem 0.875rem;border-radius:9999px;font-size:0.75rem;font-weight:700;margin-bottom:1rem;">${tm.label}</div>
+
+    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;">
+      <p style="font-size:1.0625rem;font-weight:600;line-height:1.65;margin:0;">${q.q}</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;">
+      ${q.choices.map((c,i)=>`
+        <button class="choice-btn${sel===i?' selected':''}" onclick="selectAnswer(${i})">
+          <span style="width:1.75rem;height:1.75rem;border-radius:50%;border:2px solid ${sel===i?'var(--primary)':'var(--outline-variant)'};display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;background:${sel===i?'var(--primary)':'transparent'};color:${sel===i?'var(--on-primary)':'var(--on-surface-variant)'};">${String.fromCharCode(65+i)}</span>
+          <span>${c}</span>
+        </button>
+      `).join('')}
+    </div>
+
+    <div style="display:flex;gap:0.75rem;">
+      ${state.currentQ > 0 ? `<button class="btn-outline" style="flex:1;" onclick="prevQuestion()">← Back</button>` : ''}
+      <button class="btn-primary" style="flex:2;" ${sel===null?'disabled':''} onclick="nextQuestion()">
+        ${isLast ? 'Submit & Get My Lexile 🎯' : 'Next Question →'}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ---------- PROCESSING SCREEN ----------
+function renderProcessing() {
+  const features = extractFeatures(state.answers, state.passage, (state.readingEnd||Date.now()) - state.readingStart);
+  state.prediction = runRandomForest(features);
+
+  const fItems = [
+    `Literal Accuracy: ${Math.round(features.lit_acc*100)}%`,
+    `Inferential Accuracy: ${Math.round(features.inf_acc*100)}%`,
+    `Vocabulary Score: ${Math.round(features.voc_acc*100)}%`,
+    `Main Idea Score: ${Math.round(features.mid_acc*100)}%`,
+    `Overall Score: ${Math.round(features.overall*100)}%`,
+    `Passage Difficulty: ${['Easy (Grade 3–5)','Medium (Grade 6–8)','Hard (Grade 9–12)'][features.diff]}`,
+    `Reading Time Factor: ${Math.round(features.time_f*100)}%`,
+  ];
+
+  const bandColors = ['#f59e0b','#3b82f6','#8b5cf6','#00675b','#059669','#0d9488'];
+  const bandLabels = ['~300L','~500L','~700L','~860L','~1100L','~1300L'];
+
+  app.innerHTML = `<div class="fade-in-up" style="text-align:center;padding:1rem 0;">
+    <div style="font-size:3rem;margin-bottom:1rem;">🤖</div>
+    <h2 class="headline" style="font-size:1.5rem;font-weight:800;margin-bottom:0.5rem;">Analyzing Your Reading</h2>
+    <p style="color:var(--on-surface-variant);font-size:0.875rem;margin-bottom:2rem;line-height:1.6;">Our Random Forest model is processing your responses across <strong>${trees.length} decision trees</strong>…</p>
+
+    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;text-align:left;">
+      <p class="headline" style="font-size:0.6875rem;font-weight:700;letter-spacing:0.08em;color:var(--on-surface-variant);margin-bottom:1rem;">FEATURE EXTRACTION</p>
+      <div id="featureList" style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.8125rem;">
+        <div class="blink" style="color:var(--on-surface-variant);">Extracting comprehension features…</div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:1.5rem;text-align:left;">
+      <p class="headline" style="font-size:0.6875rem;font-weight:700;letter-spacing:0.08em;color:var(--on-surface-variant);margin-bottom:1rem;">ENSEMBLE VOTING (${trees.length} TREES)</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.625rem;" id="treeGrid">
+        ${Array.from({length:trees.length},(_,i)=>`
+          <div id="tree-${i}" style="background:var(--surface-container-low);border-radius:0.75rem;padding:0.625rem 0.5rem;text-align:center;transition:all 0.3s;opacity:0.4;">
+            <div style="font-size:0.625rem;font-weight:700;color:var(--on-surface-variant);margin-bottom:0.375rem;">Tree ${i+1}</div>
+            <div id="dot-${i}" style="width:1.25rem;height:1.25rem;border-radius:50%;background:var(--surface-container-highest);margin:0 auto 0.375rem;transition:all 0.3s;"></div>
+            <div id="vote-${i}" style="font-size:0.625rem;font-weight:700;color:var(--on-surface-variant);">…</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  // Animate features
+  setTimeout(() => {
+    const fl = document.getElementById('featureList');
+    if (fl) fl.innerHTML = fItems.map(f=>`<div style="display:flex;align-items:center;gap:0.5rem;color:var(--on-surface);"><span style="color:#059669;font-weight:700;">✓</span>${f}</div>`).join('');
+  }, 350);
+
+  // Animate trees
+  const p = state.prediction;
+  trees.forEach((_,i) => {
+    setTimeout(() => {
+      const tEl = document.getElementById(`tree-${i}`);
+      const dEl = document.getElementById(`dot-${i}`);
+      const vEl = document.getElementById(`vote-${i}`);
+      if (!tEl) return;
+      const v = p.votes[i];
+      const c = bandColors[v];
+      tEl.style.opacity = '1';
+      tEl.style.background = c+'18';
+      tEl.classList.add('tree-activate');
+      if (dEl) dEl.style.background = c;
+      if (vEl) { vEl.textContent = bandLabels[v]; vEl.style.color = c; }
+    }, 500 + i*200);
+  });
+
+  // Transition
+  setTimeout(() => {
+    state.screen = 'results';
+    render();
+  }, 800 + trees.length*200 + 600);
+}
+
+// ---------- RESULTS SCREEN ----------
+function renderResults() {
+  const p = state.prediction;
+  const f = p.features;
+  const name = state.name || 'Student';
+  const pct = Math.min(1, p.lexile / 1400);
+  const dashOffset = Math.round(440*(1-pct));
+  const scoreColor = s => s>=0.7?'#059669':s>=0.4?'#d97706':'#dc2626';
+  const scoreBg    = s => s>=0.7?'#d1fae5':s>=0.4?'#fef3c7':'#fee2e2';
+  const scoreLbl   = s => s>=1.0?'Excellent':s>=0.5?'Good':'Developing';
+
+  const bookRecs = [
+    [{t:'Mia\'s Tide Pool Adventure',l:'~500L'},{t:'Nature Explorer',l:'~420L'},{t:'My Robot Friend',l:'~380L'}],
+    [{t:'The Lost City of Aethelgard',l:'~600L'},{t:'Olympic Whispers',l:'~550L'},{t:'Galaxy Quest',l:'~520L'}],
+    [{t:'The Great Wall Secret',l:'~720L'},{t:'Code & Compass',l:'~700L'},{t:'Forest Signal',l:'~680L'}],
+    [{t:'Solar Voyage',l:'~900L'},{t:'The Bombe Project',l:'~850L'},{t:'Shadow Protocol',l:'~820L'}],
+    [{t:'The Neuroplasticity Revolution',l:'~1080L'},{t:'Deep Cosmos',l:'~1050L'},{t:'The Enigma Files',l:'~1000L'}],
+    [{t:'The Architecture of Thought',l:'~1250L'},{t:'Quantum Minds',l:'~1200L'},{t:'The Grand Synthesis',l:'~1300L'}],
+  ][Math.min(p.band,5)];
+
+  app.innerHTML = `<div class="fade-in-up">
+    ${headerHTML()}
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">🎉</div>
+      <h2 class="headline" style="font-size:1.5rem;font-weight:800;margin-bottom:0.25rem;">Great job, ${name}!</h2>
+      <p style="color:var(--on-surface-variant);font-size:0.875rem;">Here's your predicted reading level</p>
+    </div>
+
+    <!-- Main Lexile Card -->
+    <div style="background:linear-gradient(135deg,var(--primary),var(--primary-dim));border-radius:1.5rem;padding:2rem;margin-bottom:1.5rem;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-2rem;top:-2rem;width:8rem;height:8rem;background:white;opacity:0.05;border-radius:50%;"></div>
+      <div style="position:absolute;left:-1rem;bottom:-2rem;width:5rem;height:5rem;background:white;opacity:0.05;border-radius:50%;"></div>
+      <div style="position:relative;width:11rem;height:11rem;margin:0 auto 1rem;" class="scale-in">
+        <svg width="176" height="176" style="transform:rotate(-90deg)">
+          <circle cx="88" cy="88" r="74" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="11"/>
+          <circle cx="88" cy="88" r="74" fill="none" stroke="white" stroke-width="11"
+            stroke-dasharray="465" stroke-dashoffset="465" stroke-linecap="round"
+            class="lexile-ring" id="lxRing"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <span id="lxCount" class="headline" style="font-size:2rem;font-weight:800;color:white;">0</span>
+          <span style="font-size:0.6rem;font-weight:800;color:rgba(255,255,255,0.65);letter-spacing:0.12em;">LEXILE</span>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.15);display:inline-block;padding:0.375rem 1.125rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;color:white;margin-bottom:0.875rem;">${p.label}</div>
+      <p style="color:rgba(255,255,255,0.85);font-size:0.875rem;margin-bottom:0.25rem;">Equivalent to <strong style="color:white;">${p.gradeEq}</strong> reading level</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:0.75rem;">Range: ${p.range}</p>
+    </div>
+
+    <!-- Skill Breakdown -->
+    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;" id="skillCard">
+      <h3 class="headline" style="font-size:1rem;font-weight:700;margin-bottom:1.125rem;">Skill Breakdown</h3>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        ${p.aspects.map(a=>`<div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.375rem;">
+            <span style="font-size:0.8125rem;font-weight:600;">${a.icon} ${a.name}</span>
+            <span style="font-size:0.75rem;font-weight:700;background:${scoreBg(a.score)};color:${scoreColor(a.score)};padding:0.15rem 0.625rem;border-radius:9999px;">${scoreLbl(a.score)}</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(a.score*100)}%;background:${scoreColor(a.score)};transition:width 1s ease;"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Strengths & Growth -->
+    ${p.strengths.length+p.growthAreas.length>0?`<div style="display:grid;grid-template-columns:${p.strengths.length&&p.growthAreas.length?'1fr 1fr':'1fr'};gap:0.875rem;margin-bottom:1.25rem;">
+      ${p.strengths.length?`<div style="background:#d1fae5;border-radius:1rem;padding:1rem;">
+        <div style="font-size:0.6875rem;font-weight:800;color:#059669;letter-spacing:0.06em;margin-bottom:0.5rem;">💪 STRENGTHS</div>
+        ${p.strengths.map(s=>`<div style="font-size:0.75rem;color:#065f46;font-weight:600;line-height:1.5;">• ${s}</div>`).join('')}
+      </div>`:''}
+      ${p.growthAreas.length?`<div style="background:#fef3c7;border-radius:1rem;padding:1rem;">
+        <div style="font-size:0.6875rem;font-weight:800;color:#d97706;letter-spacing:0.06em;margin-bottom:0.5rem;">🌱 GROW HERE</div>
+        ${p.growthAreas.map(g=>`<div style="font-size:0.75rem;color:#92400e;font-weight:600;line-height:1.5;">• ${g}</div>`).join('')}
+      </div>`:''}
+    </div>`:''}
+
+    <!-- RF Model Details -->
+    <div style="background:var(--surface-container);border-radius:1rem;padding:1.125rem;margin-bottom:1.25rem;display:flex;gap:0.875rem;align-items:flex-start;">
+      <span style="font-size:1.25rem;flex-shrink:0;">🌲</span>
+      <div>
+        <div style="font-size:0.8125rem;font-weight:700;margin-bottom:0.25rem;">Random Forest Results</div>
+        <p style="font-size:0.75rem;color:var(--on-surface-variant);margin:0;line-height:1.6;">${trees.length} decision trees voted on your Lexile band. Majority vote: <strong>Band ${p.band}</strong> with <strong>${p.counts[p.band]} out of ${trees.length} votes</strong>. Fine-tuned using overall accuracy offset.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-top:0.625rem;">
+          ${Object.entries(p.counts).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([band,cnt])=>`
+            <span style="background:${['#fef3c7','#dbeafe','#ede9fe','#d4fffb','#d1fae5','#ccfbf1'][parseInt(band)]};color:${['#92400e','#1e40af','#4c1d95','#003533','#065f46','#134e4a'][parseInt(band)]};padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.6875rem;font-weight:700;">Band ${band}: ${cnt} votes</span>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Book Recommendations -->
+    <div class="card" style="padding:1.5rem;margin-bottom:1.5rem;">
+      <h3 class="headline" style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">📚 Library Recommendations</h3>
+      <p style="font-size:0.8125rem;color:var(--on-surface-variant);line-height:1.6;margin-bottom:1rem;">At <strong>${p.lexile}L</strong>, you're ready for stories in the <strong>${p.range}</strong> range. Look for these in the Cognitive Sanctuary library:</p>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        ${bookRecs.map(b=>`<div style="background:var(--surface-container-low);border-radius:0.875rem;padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.8125rem;font-weight:600;">📖 ${b.t}</span>
+          <span style="background:var(--primary-container);color:var(--on-primary-container);padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.6875rem;font-weight:700;">${b.l}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+      <button class="btn-primary" style="width:100%;" onclick="resetApp()">
+        <span class="material-symbols-outlined" style="font-size:1.25rem;">refresh</span> Retake Assessment
+      </button>
+      <button class="btn-outline" style="width:100%;" onclick="resetApp()">
+        Go to Library →
+      </button>
+    </div>
+  </div>`;
+
+  // Animate Lexile counter + ring
+  const target = p.lexile;
+  let cur = 0;
+  const step = target/55;
+  const lxEl = document.getElementById('lxCount');
+  const ringEl = document.getElementById('lxRing');
+  if (ringEl) { setTimeout(()=>{ ringEl.style.strokeDashoffset = dashOffset; }, 100); }
+  const civ = setInterval(() => {
+    cur = Math.min(target, cur+step);
+    if (lxEl) lxEl.textContent = Math.round(cur)+'L';
+    if (cur>=target) clearInterval(civ);
+  }, 28);
+}
+
+// ============================================================
+// EVENT HANDLERS
+// ============================================================
+function selectGrade(g) {
+  state.grade = g;
+  document.querySelectorAll('.grade-chip').forEach((chip,i) => {
+    const gs=[3,4,5,6,7,8,9,10,11,12];
+    chip.classList.toggle('selected', gs[i]===g);
+  });
+}
+
+async function startAssessment() {
+  const inp = document.getElementById('nameInput');
+  if (inp) state.name = inp.value.trim();
+  if (!state.name) { alert('Please enter your name! 😊'); return; }
+  if (!state.grade) { alert('Please select your grade! 📚'); return; }
+
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: state.name, grade: state.grade })
+    });
+    const payload = await res.json();
+
+    if (!res.ok) {
+      throw new Error(payload.error || 'Registration failed');
+    }
+
+    state.userId = payload.user_id;
+    console.log('Registered user_id', state.userId);
+  } catch (err) {
+    console.error('Registration error', err);
+    alert('Could not register user. Please check your connection and try again.');
+    return;
+  }
+
+  state.passage = passages.find(p=>p.grades.includes(state.grade)) || passages[1];
+  state.answers = []; state.currentQ = 0;
+  state.screen = 'passage'; render();
+}
+
+function goToQuestions() {
+  state.readingEnd = Date.now();
+  state.screen = 'questions'; render();
+}
+
+function selectAnswer(i) {
+  state.answers[state.currentQ] = i; render();
+}
+
+function nextQuestion() {
+  if (state.answers[state.currentQ]===undefined) return;
+  if (state.currentQ < state.passage.questions.length-1) {
+    state.currentQ++; render();
+  } else {
+    state.readingEnd = state.readingEnd || Date.now();
+    state.screen = 'processing'; render();
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQ>0) { state.currentQ--; render(); }
+}
+
+function resetApp() {
+  state.screen='welcome'; state.answers=[]; state.currentQ=0;
+  state.prediction=null; state.passage=null; render();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+render();
+</script>
+</body>
+</html>
