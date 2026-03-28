@@ -410,12 +410,18 @@ function runRandomForest(features) {
 // ============================================================
 const state = {
   screen: 'welcome',
-  name: '', grade: null, passage: null,
+  name: localStorage.getItem('studentName') || '',
+  grade: parseInt(localStorage.getItem('studentGrade'), 10) || null,
+  passage: null,
   userId: null,
   answers: [], currentQ: 0,
   readingStart: null, readingEnd: null,
   prediction: null
 };
+
+if (!state.name || !state.grade) {
+  window.location.href = '/login.html';
+}
 
 // ============================================================
 // RENDER ENGINE
@@ -797,6 +803,9 @@ async function startAssessment() {
   if (inp) state.name = inp.value.trim();
   if (!state.name) { alert('Please enter your name! 😊'); return; }
   if (!state.grade) { alert('Please select your grade! 📚'); return; }
+
+  localStorage.setItem('studentName', state.name);
+  localStorage.setItem('studentGrade', state.grade);
 
   try {
     const res = await fetch('/api/register', {
