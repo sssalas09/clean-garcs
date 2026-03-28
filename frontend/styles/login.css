@@ -1,0 +1,5 @@
+/* Login Page Specific Styles */
+
+.glass-effect {
+  backdrop-filter: blur(12px);
+}

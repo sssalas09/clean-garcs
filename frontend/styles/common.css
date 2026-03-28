@@ -1,0 +1,22 @@
+/* Common Tailwind Configuration & Material Symbols */
+:root {
+  --tailwind-installed: true;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #d4fffb;
+  min-height: max(884px, 100dvh);
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
