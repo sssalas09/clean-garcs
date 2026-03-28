@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from datetime import datetime
@@ -10,12 +10,13 @@ import csv
 # =====================================
 # APP SETUP
 # =====================================
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 CORS(app)
+
 
 # =====================================
 # DATABASE MODELS
@@ -76,11 +77,12 @@ with app.app_context():
 
 
 # =====================================
-# HEALTH CHECK
+# HEALTH CHECK + SERVE FRONTEND
 # =====================================
 @app.route("/")
 def home():
-    return jsonify({"message": "API is running 🚀"})
+    return send_file('../frontend/index.html')
+
 
 
 # =====================================
