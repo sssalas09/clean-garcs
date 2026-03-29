@@ -761,7 +761,7 @@ function renderResults() {
       <button class="btn-primary" style="width:100%;" onclick="resetApp()">
         <span class="material-symbols-outlined" style="font-size:1.25rem;">refresh</span> Retake Assessment
       </button>
-      <button class="btn-outline" style="width:100%;" onclick="resetApp()">
+      <button class="btn-outline" style="width:100%;" onclick="goToLibrary()">
         Go to Library →
       </button>
     </div>
@@ -849,6 +849,10 @@ function prevQuestion() {
 function resetApp() {
   state.screen='welcome'; state.answers=[]; state.currentQ=0;
   state.prediction=null; state.passage=null; render();
+}
+
+function goToLibrary() {
+  window.location.href = '/library';
 }
 
 // ============================================================
