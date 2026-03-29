@@ -1,0 +1,10 @@
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# Virtual environment
+.venv/
+ 
+ 
