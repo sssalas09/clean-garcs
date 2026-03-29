@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cognitive Sanctuary - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-highest": "#96ece7",
+                        "error-container": "#fb5151",
+                        "primary-fixed-dim": "#8bdece",
+                        "tertiary-fixed": "#e9fe90",
+                        "inverse-on-surface": "#6da7a4",
+                        "on-tertiary-fixed-variant": "#5d6d0d",
+                        "tertiary": "#526200",
+                        "surface-container-high": "#a2f1ec",
+                        "surface": "#d4fffb",
+                        "tertiary-container": "#e9fe90",
+                        "tertiary-fixed-dim": "#dbef84",
+                        "on-secondary-fixed-variant": "#1c5385",
+                        "surface-variant": "#96ece7",
+                        "secondary-container": "#b3d4ff",
+                        "on-surface-variant": "#296462",
+                        "surface-container-low": "#bafdf9",
+                        "on-primary-fixed-variant": "#006357",
+                        "on-tertiary": "#e8fd90",
+                        "on-primary-fixed": "#00443b",
+                        "on-secondary-container": "#0c4a7b",
+                        "error-dim": "#9f0519",
+                        "on-secondary": "#edf3ff",
+                        "on-tertiary-container": "#526200",
+                        "secondary-fixed-dim": "#99c7ff",
+                        "background": "#d4fffb",
+                        "on-error": "#ffefee",
+                        "secondary-dim": "#1b5284",
+                        "on-background": "#003533",
+                        "tertiary-dim": "#475500",
+                        "outline": "#47807d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#00594e",
+                        "primary-container": "#99ecdb",
+                        "secondary-fixed": "#b3d4ff",
+                        "on-tertiary-fixed": "#424f00",
+                        "surface-container": "#adf5f1",
+                        "primary-fixed": "#99ecdb",
+                        "surface-tint": "#00675b",
+                        "surface-bright": "#d4fffb",
+                        "error": "#b31b25",
+                        "on-secondary-fixed": "#00365f",
+                        "primary": "#00675b",
+                        "surface-dim": "#88e4df",
+                        "on-surface": "#003533",
+                        "primary-dim": "#005a4f",
+                        "on-primary": "#c1fff1",
+                        "outline-variant": "#7db8b4",
+                        "secondary": "#2a5e91",
+                        "inverse-surface": "#001110",
+                        "inverse-primary": "#aafeec",
+                        "on-error-container": "#570008"
+                    },
+                    fontFamily: {
+                        "headline": ["Lexend"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #d4fffb;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(0, 53, 51, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface bg-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full sticky top-0 z-50 bg-[#d4fffb] dark:bg-teal-950 rounded-b-[2rem] px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden">
+<img alt="Student Profile Avatar" class="w-full h-full object-cover" data-alt="friendly 3D stylized character avatar of a young student with glasses and a cheerful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1UCmVdNpVzjjuMHUS3RDc5jIKIWkBDSBQtRgEbTVFUxe2yVzrkpsZBIuHEU-0HOh7dTJj_s5fsQhKvfrgWShAp6C2X0z53dyKYQLV0umVrSNkr6QlXSx5CKqB0Rr1xz0nZyFoSpO2d_8w18U_D2tOf3CoM1Wab2Tc9HLG6Q3Ftnkm4U-RKb_u-09zie_txcSXdia6UbfC1Uf540pbeDCRMb6jwH_fzaXhgDyZBEOcw8UmCiZpzld-JfxIqA48QrtYDn5mpBq7O1E-"/>
+</div>
+<span class="text-xl font-bold text-[#006B5E] dark:text-teal-300 font-['Lexend']">Cognitive Sanctuary</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-[#006B5E] dark:text-teal-400 hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="px-6 py-8 max-w-5xl mx-auto space-y-8">
+<!-- Welcome Section -->
+<section class="flex flex-col md:flex-row items-center justify-between gap-6 bg-surface-container rounded-xl p-8 relative overflow-hidden">
+<div class="space-y-2 z-10">
+<h1 class="text-4xl font-headline font-extrabold text-on-surface leading-tight">Hi, Alex!</h1>
+<p class="text-xl font-body text-on-surface-variant">Ready to read today?</p>
+</div>
+<div class="relative z-10 hidden md:block">
+<div class="w-48 h-48 bg-primary-container rounded-full editorial-shadow flex items-center justify-center">
+<img alt="Reading Illustration" class="w-32 h-32" data-alt="placeholder image" src="https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg="/>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -right-10 -bottom-10 w-64 h-64 bg-surface-container-highest rounded-full opacity-30"></div>
+</section>
+<!-- Bento Grid Layout for Progress & Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Progress Overview Card -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 editorial-shadow space-y-8">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-2xl font-headline font-bold text-on-surface">Your Mastery</h2>
+<p class="text-on-surface-variant font-body">Current Level Progress</p>
+</div>
+<div class="bg-tertiary-container text-on-tertiary-container px-4 py-2 rounded-full font-headline font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>1,250 Points</span>
+</div>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-10">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="88" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-headline font-extrabold text-primary">850L</span>
+<span class="text-xs font-body font-bold text-on-surface-variant uppercase tracking-wider">Lexile</span>
+</div>
+</div>
+<div class="flex-1 space-y-6 w-full">
+<div class="space-y-2">
+<div class="flex justify-between font-label font-bold text-on-surface">
+<span>Reading Accuracy</span>
+<span>92%</span>
+</div>
+<div class="h-3 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[92%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label font-bold text-on-surface">
+<span>Vocabulary Growth</span>
+<span>78%</span>
+</div>
+<div class="h-3 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full w-[78%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="flex flex-col gap-4">
+<button class="flex-1 bg-gradient-to-br from-primary to-primary-dim text-on-primary rounded-lg p-6 flex flex-col items-center justify-center gap-4 editorial-shadow hover:scale-[0.98] transition-all duration-200">
+<div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl" data-icon="book" style="font-variation-settings: 'FILL' 1;">book</span>
+</div>
+<span class="font-headline font-bold text-xl">Start Reading</span>
+</button>
+<button class="flex-1 bg-secondary-container text-on-secondary-container rounded-lg p-6 flex flex-col items-center justify-center gap-4 editorial-shadow hover:scale-[0.98] transition-all duration-200">
+<div class="w-16 h-16 bg-on-secondary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl" data-icon="trophy" style="font-variation-settings: 'FILL' 1;">trophy</span>
+</div>
+<span class="font-headline font-bold text-xl">Take the weekly quiz</span>
+</button>
+</div>
+</div>
+<!-- Recent Activity Section -->
+<section class="space-y-4">
+<h3 class="text-2xl font-headline font-bold text-on-surface px-2">Keep Exploring</h3>
+<div class="bg-surface-container-low rounded-xl p-6 editorial-shadow">
+<div class="flex flex-col md:flex-row items-center gap-6">
+<div class="w-32 h-44 rounded-md overflow-hidden editorial-shadow flex-shrink-0">
+<img alt="Book Cover" class="w-full h-full object-cover" data-alt="book placeholder image" src="https://img.freepik.com/free-vector/red-text-book-closed-icon_18591-82397.jpg?semt=ais_incoming&w=740&q=80"/>
+</div>
+<div class="flex-1 space-y-3">
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tight">Last Read</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tight">Adventure</span>
+</div>
+<h4 class="text-2xl font-headline font-bold text-on-surface">The Secret of the Echoing Cave</h4>
+<p class="text-on-surface-variant font-body">By Sarah J. Windlow • Chapter 4 of 12</p>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[33%]"></div>
+</div>
+<span class="text-sm font-label font-bold text-on-surface">33%</span>
+</div>
+</div>
+<button class="bg-surface-container-highest text-on-surface px-6 py-3 rounded-full font-label font-bold hover:scale-95 transition-transform flex items-center gap-2">
+<span>Continue</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#d4fffb]/80 backdrop-blur-xl dark:bg-teal-950/80 rounded-t-[3rem] shadow-[0_-20px_40px_rgba(0,53,51,0.06)]">
+<a class="flex flex-col items-center justify-center bg-[#00675b] text-white rounded-full px-6 py-2 scale-98 active:scale-95 duration-200 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#003533] p-2 hover:bg-[#96ece7] dark:hover:bg-teal-800 rounded-full transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="import_contacts">import_contacts</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#003533] p-2 hover:bg-[#96ece7] dark:hover:bg-teal-800 rounded-full transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Progress</span>
+</a>
+</nav>
+</body></html>
