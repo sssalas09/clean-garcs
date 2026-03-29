@@ -1,0 +1,14 @@
+# Python environment
+venv/
+
+# SQLite database
+*.db
+database.db
+
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# IDE/editor
+.vscode/
+*.swp
