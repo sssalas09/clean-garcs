@@ -81,7 +81,7 @@ with app.app_context():
 # =====================================
 @app.route("/")
 def home():
-    return send_file('../frontend/index.html')
+    return send_file('../frontend/dashboard.html')
 
 
 

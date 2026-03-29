@@ -466,11 +466,6 @@ function renderWelcome() {
       </div>
     </div>
 
-    <div class="card" style="padding:1.5rem;margin-bottom:1.25rem;">
-      <label style="display:block;font-weight:700;font-size:0.875rem;margin-bottom:0.75rem;">What's your name?</label>
-      <input id="nameInput" class="name-input" type="text" placeholder="Enter your first name…" value="${state.name}" oninput="state.name=this.value"/>
-    </div>
-
     <div class="card" style="padding:1.5rem;margin-bottom:2rem;">
       <label style="display:block;font-weight:700;font-size:0.875rem;margin-bottom:0.875rem;">What grade are you in?</label>
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="gradeChips">
@@ -793,9 +788,8 @@ function selectGrade(g) {
 }
 
 async function startAssessment() {
-  const inp = document.getElementById('nameInput');
-  if (inp) state.name = inp.value.trim();
-  if (!state.name) { alert('Please enter your name! 😊'); return; }
+  // Set default name since input was removed
+  state.name = state.name || 'Student';
   if (!state.grade) { alert('Please select your grade! 📚'); return; }
 
   try {
