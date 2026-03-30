@@ -241,4 +241,28 @@
 <span class="font-['Lexend'] font-medium text-[12px]">Progress</span>
 </a>
 </nav>
-</body></html>
+</body>
+
+<script>
+  const API_BASE = 'http://localhost:5000';
+  
+  // Check authentication and load user data
+  function checkAuth() {
+    const userId = localStorage.getItem('user_id');
+    
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+  }
+  
+  // Handle logout
+  function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+  
+  // Initialize on page load
+  window.addEventListener('load', checkAuth);
+</script>
+</html>

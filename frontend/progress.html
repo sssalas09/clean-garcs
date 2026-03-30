@@ -340,4 +340,47 @@
 <span class="font-lexend text-[10px] font-medium uppercase tracking-widest mt-1" style="">Progress</span>
 </a>
 </nav>
+
+<script>
+  const API_BASE = 'http://localhost:5000';
+  
+  // Check authentication and load user data
+  function checkAuth() {
+    const userId = localStorage.getItem('user_id');
+    const userName = localStorage.getItem('name');
+    
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // Update user display name
+    const userNameDisplay = document.querySelector('[data-alt*="close-up portrait"]')?.parentElement?.nextElementSibling;
+    if (userNameDisplay && userName) {
+      const nameSpan = userNameDisplay.querySelector('span');
+      if (nameSpan) {
+        nameSpan.textContent = userName;
+      }
+    }
+    
+    // Update XP display
+    const totalXp = localStorage.getItem('total_xp');
+    const xpElements = document.querySelectorAll('[style*="font-variation"]');
+    xpElements.forEach((el) => {
+      const parent = el.parentElement?.parentElement;
+      if (parent && parent.textContent.includes('XP')) {
+        parent.textContent = `${totalXp || 0} XP`;
+      }
+    });
+  }
+  
+  // Handle logout
+  function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+  
+  // Initialize on page load
+  window.addEventListener('load', checkAuth);
+</script>
 </body></html>

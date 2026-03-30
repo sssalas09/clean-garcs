@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify, send_file, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from sqlalchemy import inspect
 from datetime import datetime
 import numpy as np
 import joblib
 import os
 import csv
+import bcrypt
+import uuid
 import bcrypt
 import uuid
 
@@ -16,9 +17,10 @@ import uuid
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'
 
 db = SQLAlchemy(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 
 # =====================================
@@ -31,16 +33,6 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(100))
     grade = db.Column(db.Integer)
-    current_lexile = db.Column(db.Integer, default=500)
-    current_band = db.Column(db.Integer, default=0)
-    total_xp = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
 
 
 class Attempt(db.Model):
@@ -121,10 +113,13 @@ def library():
 def progress():
     return send_file('../frontend/progress.html')
 
+@app.route("/login")
+def login_page():
+    return send_file('../frontend/login.html')
 
 
 # =====================================
-# AUTHENTICATION ENDPOINTS
+# REGISTER USER
 # =====================================
 
 @app.route('/api/auth/register', methods=['POST'])
@@ -319,7 +314,25 @@ def submit():
 
     db.session.add(attempt)
     db.session.commit()
-
+    
+    # Update user progress
+    user = User.query.get(data['user_id'])
+    if user:
+        # Calculate XP based on accuracy and difficulty
+        xp_gain = int((data['overall'] * 100) + (data['diff'] * 50))
+        user.total_xp += xp_gain
+        user.current_lexile = data['lexile']
+        user.current_band = data['band']
+        db.session.commit()
+        
+        return jsonify({
+            "message": "saved",
+            "xp_gain": xp_gain,
+            "total_xp": user.total_xp,
+            "current_lexile": user.current_lexile,
+            "current_band": user.current_band
+        })
+    
     return jsonify({"message": "saved"})
 
 

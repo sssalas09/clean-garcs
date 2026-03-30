@@ -230,4 +230,59 @@
 <span class="font-['Lexend'] font-medium text-[12px]">Progress</span>
 </a>
 </nav>
-</body></html>
+</body>
+
+<script>
+  const API_BASE = 'http://localhost:5000';
+  
+  // Check authentication and load user data
+  function checkAuth() {
+    const userId = localStorage.getItem('user_id');
+    const userName = localStorage.getItem('name');
+    
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // Update welcome message
+    const welcomeHeading = document.querySelector('h1');
+    if (welcomeHeading) {
+      welcomeHeading.textContent = `Hi, ${userName || 'Student'}!`;
+    }
+    
+    // Update XP display
+    const totalXp = localStorage.getItem('total_xp');
+    const xpDisplay = document.querySelector('[data-icon="stars"]').parentElement;
+    if (xpDisplay) {
+      xpDisplay.innerHTML = `<span class="material-symbols-outlined text-[20px]" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span><span>${totalXp || 0} Points</span>`;
+    }
+    
+    // Update Lexile display
+    const lexile = localStorage.getItem('current_lexile');
+    const lexileDisplay = document.querySelector('[data-icon=""] .text-3xl');
+    const lexileElements = document.querySelectorAll('.text-3xl.font-headline');
+    lexileElements.forEach(el => {
+      if (el.textContent.includes('L')) {
+        el.textContent = `${lexile || 500}L`;
+      }
+    });
+  }
+  
+  // Handle logout
+  function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+  
+  // Initialize on page load
+  window.addEventListener('load', checkAuth);
+  
+  // Add logout handler to settings button
+  document.querySelector('button[data-icon="settings"]').addEventListener('click', () => {
+    if (confirm('Are you sure you want to logout?')) {
+      logout();
+    }
+  });
+</script>
+</html>
