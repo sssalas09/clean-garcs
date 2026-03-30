@@ -1,11 +1,14 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import inspect
 from datetime import datetime
 import numpy as np
 import joblib
 import os
 import csv
+import bcrypt
+import uuid
 
 # =====================================
 # APP SETUP
@@ -23,8 +26,21 @@ CORS(app)
 # =====================================
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(100))
     grade = db.Column(db.Integer)
+    current_lexile = db.Column(db.Integer, default=500)
+    current_band = db.Column(db.Integer, default=0)
+    total_xp = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
 
 
 class Attempt(db.Model):
@@ -72,7 +88,21 @@ def load_models():
 # INIT DB + LOAD MODELS
 # =====================================
 with app.app_context():
-    db.create_all()
+    # If existing sqlite schema is outdated, recreate tables.
+    try:
+        inspector = inspect(db.engine)
+        if 'user' in inspector.get_table_names():
+            user_cols = [c['name'] for c in inspector.get_columns('user')]
+            required = {'username', 'email', 'password_hash', 'current_lexile', 'total_xp'}
+            if not required.issubset(set(user_cols)):
+                db.drop_all()
+                db.create_all()
+        else:
+            db.create_all()
+    except Exception:
+        db.drop_all()
+        db.create_all()
+
     load_models()
 
 
@@ -94,24 +124,105 @@ def progress():
 
 
 # =====================================
-# REGISTER USER
+# AUTHENTICATION ENDPOINTS
 # =====================================
-@app.route('/api/register', methods=['POST'])
-def register():
-    data = request.json
 
-    if not data.get("name") or not data.get("grade"):
-        return jsonify({"error": "Missing name or grade"}), 400
+@app.route('/api/auth/register', methods=['POST'])
+def register_user():
+    data = request.json
+    required_fields = ['username', 'email', 'password', 'name', 'grade']
+
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return jsonify({"error": f"Missing {field}"}), 400
+
+    username = data['username'].strip()
+    email = data['email'].strip().lower()
+    password = data['password']
+    name = data['name'].strip()
+    grade = int(data['grade'])
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "Username already exists"}), 409
+
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "Email already exists"}), 409
 
     user = User(
-        name=data['name'],
-        grade=data['grade']
+        username=username,
+        email=email,
+        name=name,
+        grade=grade,
+        current_lexile=500 + (grade * 50)
     )
+    user.set_password(password)
 
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({"user_id": user.id})
+    return jsonify({
+        "message": "User registered successfully",
+        "user_id": user.id,
+        "username": user.username
+    }), 201
+
+
+@app.route('/api/auth/login', methods=['POST'])
+def login_user():
+    data = request.json
+
+    if not data.get('username') or not data.get('password'):
+        return jsonify({"error": "Missing username or password"}), 400
+
+    username = data['username'].strip()
+    password = data['password']
+
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.check_password(password):
+        return jsonify({"error": "Invalid username or password"}), 401
+
+    session_token = str(uuid.uuid4())
+    session['user_id'] = user.id
+    session['username'] = user.username
+    session['session_token'] = session_token
+
+    return jsonify({
+        "message": "Login successful",
+        "user_id": user.id,
+        "username": user.username,
+        "name": user.name,
+        "grade": user.grade,
+        "current_lexile": user.current_lexile,
+        "current_band": user.current_band,
+        "total_xp": user.total_xp,
+        "session_token": session_token
+    }), 200
+
+
+@app.route('/api/auth/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"message": "Logout successful"}), 200
+
+
+@app.route('/api/auth/user', methods=['GET'])
+def get_current_user():
+    if 'user_id' not in session:
+        return jsonify({"error": "Not authenticated"}), 401
+
+    user = User.query.get(session['user_id'])
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify({
+        "user_id": user.id,
+        "username": user.username,
+        "name": user.name,
+        "grade": user.grade,
+        "current_lexile": user.current_lexile,
+        "current_band": user.current_band,
+        "total_xp": user.total_xp
+    }), 200
 
 
 # =====================================
