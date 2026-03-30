@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumina Learn - Library</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error-container": "#570008",
+                        "tertiary-fixed": "#e9fe90",
+                        "on-primary-container": "#00594e",
+                        "surface-container-highest": "#96ece7",
+                        "primary": "#00675b",
+                        "on-secondary": "#edf3ff",
+                        "secondary-container": "#b3d4ff",
+                        "surface-variant": "#96ece7",
+                        "outline": "#47807d",
+                        "inverse-primary": "#aafeec",
+                        "on-secondary-fixed-variant": "#1c5385",
+                        "on-primary": "#c1fff1",
+                        "on-tertiary-fixed": "#424f00",
+                        "secondary": "#2a5e91",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#99c7ff",
+                        "inverse-surface": "#001110",
+                        "on-primary-fixed-variant": "#006357",
+                        "on-tertiary-fixed-variant": "#5d6d0d",
+                        "outline-variant": "#7db8b4",
+                        "error-container": "#fb5151",
+                        "surface-tint": "#00675b",
+                        "on-surface": "#003533",
+                        "secondary-fixed": "#b3d4ff",
+                        "on-background": "#003533",
+                        "tertiary-dim": "#475500",
+                        "inverse-on-surface": "#6da7a4",
+                        "surface-container-low": "#bafdf9",
+                        "surface-container": "#adf5f1",
+                        "on-secondary-fixed": "#00365f",
+                        "error-dim": "#9f0519",
+                        "on-error": "#ffefee",
+                        "tertiary": "#526200",
+                        "tertiary-fixed-dim": "#dbef84",
+                        "surface-bright": "#d4fffb",
+                        "surface": "#d4fffb",
+                        "background": "#d4fffb",
+                        "primary-container": "#99ecdb",
+                        "surface-container-high": "#a2f1ec",
+                        "primary-fixed-dim": "#8bdece",
+                        "primary-dim": "#005a4f",
+                        "primary-fixed": "#99ecdb",
+                        "on-tertiary": "#e8fd90",
+                        "secondary-dim": "#1b5284",
+                        "on-primary-fixed": "#00443b",
+                        "on-tertiary-container": "#526200",
+                        "on-surface-variant": "#296462",
+                        "tertiary-container": "#e9fe90",
+                        "error": "#b31b25",
+                        "surface-dim": "#88e4df",
+                        "on-secondary-container": "#0c4a7b"
+                    },
+                    fontFamily: {
+                        "headline": ["Lexend"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #d4fffb;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 py-4 w-full sticky top-0 z-50 bg-[#d4fffb] dark:bg-teal-950">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-[#006B5E] dark:text-teal-400 hover:bg-[#96ece7] transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-[#006B5E] dark:text-teal-300 font-['Lexend'] font-extrabold text-xl tracking-tight">Reading Sanctuary</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden ring-2 ring-primary/20">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a friendly diverse teenage student avatar with a soft blurred teal background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcaQYgP0KJ4N2Zn040KFSbA1uLl50eylRX0deumDHkynV7ci0RncTp3ZzWQO5kbV_Shj-uwse325EzDNDJKTB5jHOKpIyweeGRqnpciGpHgBj22oqn-U0GAq29vxmohvsBZFA9tKfT5ev4zbbfTRlv-6H7vX8DAcuqOMZw4wRBtAEskmB2rdprzVyb1Vu0ofpNWwr4D33wQem1NorAblrJSEOHQv2U5Os6nJjI3LG4_1HfZmgmkFm2T7jniA6FAENoe3WdOR8Zq7t4"/>
+</div>
+</header>
+<main class="px-6 space-y-8 max-w-5xl mx-auto">
+<!-- Search Bar -->
+<section class="mt-4">
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest border-none h-14 pl-12 pr-4 rounded-lg font-body focus:ring-2 focus:ring-primary/40 focus:bg-surface-bright transition-all shadow-sm placeholder:text-outline-variant/60" placeholder="Find specific stories..." type="text"/>
+</div>
+</section>
+<!-- Category Chips -->
+<section class="flex gap-3 overflow-x-auto hide-scrollbar -mx-6 px-6">
+<button class="flex-none px-6 py-2.5 rounded-full bg-secondary-container text-on-secondary-container font-label font-semibold text-sm transition-all active:scale-95">All</button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-variant text-on-surface-variant font-label font-medium text-sm hover:bg-surface-container-highest transition-all active:scale-95">Adventure</button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-variant text-on-surface-variant font-label font-medium text-sm hover:bg-surface-container-highest transition-all active:scale-95">Science</button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-variant text-on-surface-variant font-label font-medium text-sm hover:bg-surface-container-highest transition-all active:scale-95">Mythology</button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-variant text-on-surface-variant font-label font-medium text-sm hover:bg-surface-container-highest transition-all active:scale-95">History</button>
+</section>
+<!-- Featured Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline font-bold text-lg text-on-surface">Featured Discovery</h2>
+<span class="text-xs font-label font-bold text-tertiary uppercase tracking-widest">Trending Now</span>
+</div>
+<div class="relative w-full h-80 rounded-xl overflow-hidden group cursor-pointer shadow-xl">
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/30 to-transparent z-10"></div>
+<img alt="The Lost City" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="majestic ancient stone ruins deep within a misty tropical jungle with sunlight beams filtering through dense canopy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_Xq3TP_yNX8lrZspvq8AAT7Pgh10WYdxoWql20BVWF-ikUAoUxVfSoDg3s4_38VojLkE6NsE5fpw7cTSoKOjdIEOD6FqkbAaIF4BVYEjigttiVq1gyI2_O7XO_nEmCDtMMwDHM2lQelPVodyZh5oL95-8ILc9Zz31hG39CpmKibBRTZWd8CYAs0djq_RMNZ5hK0mWBiyrL4rfq6wYqwNyb1b6rfgdHFhL6adPYv3RwM1if8jFFm8F6cL1EAEGlC8k88_sMJbKnUdr"/>
+<div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded-full uppercase tracking-tighter">Adventure</span>
+<span class="text-surface-container-lowest text-xs font-medium">850L Lexile</span>
+</div>
+<h3 class="font-headline text-3xl font-extrabold text-white mb-2 leading-tight">The Lost City of Aethelgard</h3>
+<p class="text-white/80 font-body text-sm max-w-md line-clamp-2">Embark on a journey through forgotten jungles to find the secret heart of a mechanical civilization.</p>
+</div>
+</div>
+</section>
+<!-- Browse All Grid -->
+<section>
+<h2 class="font-headline font-bold text-lg text-on-surface mb-6">Browse All Stories</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 hover:bg-surface-bright transition-colors cursor-pointer shadow-sm">
+<div class="w-24 h-32 rounded-md overflow-hidden flex-none shadow-md">
+<img alt="Solar Voyage" class="w-full h-full object-cover" data-alt="vibrant futuristic spacecraft traveling near a glowing orange star with purple cosmic nebulae in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg6TtO5sIGdOmhxqkUuocIU7--pA0ue5BZ3oa1hMPKtyu4TV9tE53jpR6bw5ydiguUfLABXRZ3ow_WlBxbDv8sVXMcSSqLWG0t4qrBUE82_Ou7qSRj3DWY0n0V-S8MMfTdLhywy3hMQf_fLkb2aI3hx1YrFQJOtbkQclUONXVKwqmZW87lyc53da66dLfojOsQet5dk7NJdqYbE4f7o8cB2AL7ZFULd-VkZ5vaq8-lZA5IgoSvGf3d-_sfzoCb3bitqDSB7BSbUbJ6"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Science</span>
+<h4 class="font-headline font-bold text-on-surface text-base">Solar Voyage</h4>
+<p class="text-on-surface-variant font-body text-xs mt-1 mb-3 line-clamp-1">A daring crew races against time to harness the power of a dying sun.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-primary-container text-[10px] font-bold rounded-full">900L</span>
+<span class="text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 15 min read
+                            </span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 hover:bg-surface-bright transition-colors cursor-pointer shadow-sm">
+<div class="w-24 h-32 rounded-md overflow-hidden flex-none shadow-md">
+<img alt="The Great Wall Secret" class="w-full h-full object-cover" data-alt="ancient chinese architecture at twilight with soft glowing paper lanterns and misty mountains in the distance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDygjaqV1mB9UAZtW23ox-qp4e4FJKMlMtBpyApqbiclNlTHzO91FTw_OZWZTYdnlOVUpTTUyAK3Mrrxh90GQYdP7tjKV4siPXEzBamkFjqSW1Fr4TdO_xdd0z_5uExWIlDgIfbNEcdvjT72XgbSvQt5wWktKYpPba3v0_9UgO88q9EtPwWvWaoOzOtkJmTyD2iOiBJQ2-rluhxIPWPcqY-3TRcXvNOAQ4itW9oZeDWH3OwaGeScdnjb7vsKVk-6JBhnl5OldFquv1X"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">History</span>
+<h4 class="font-headline font-bold text-on-surface text-base">The Great Wall Secret</h4>
+<p class="text-on-surface-variant font-body text-xs mt-1 mb-3 line-clamp-1">Discover the hidden tunnels used by guardians centuries ago.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-primary-container text-[10px] font-bold rounded-full">720L</span>
+<span class="text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 12 min read
+                            </span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 hover:bg-surface-bright transition-colors cursor-pointer shadow-sm">
+<div class="w-24 h-32 rounded-md overflow-hidden flex-none shadow-md">
+<img alt="Olympic Whispers" class="w-full h-full object-cover" data-alt="statue of an ancient greek hero under a clear blue sky with white marble columns and olive branches" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS9_NtiJZmKIb872BpzWlyc0IWNwOCowVr4YRenCVe67It36vfwpJULItrNHOKr3nPh5pDVNQ73vVaPClR3AQdEzBl7ZrlK4-bQ5GAx6F5JoaZu6nIE_42hnjIDP3v7KSier6bv5OOPCdCxPDFMkqgC7c7kegCEU--LqRVhnGwTF6QOTM3pVR6HZfMtiA-oVl9NhFFkpaBpBR7FrgvstLwqSzn1wEKgSMHhEwo99NrieYLGfmKIOvwnZbuyTIXhxxBl-4Yi7_d-ek0"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Mythology</span>
+<h4 class="font-headline font-bold text-on-surface text-base">Olympic Whispers</h4>
+<p class="text-on-surface-variant font-body text-xs mt-1 mb-3 line-clamp-1">What the gods told the mortals during the first great games.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-primary-container text-[10px] font-bold rounded-full">810L</span>
+<span class="text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 20 min read
+                            </span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 hover:bg-surface-bright transition-colors cursor-pointer shadow-sm">
+<div class="w-24 h-32 rounded-md overflow-hidden flex-none shadow-md">
+<img alt="Deep Sea Echoes" class="w-full h-full object-cover" data-alt="bioluminescent jellyfish glowing electric blue in deep dark ocean water with floating particles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlO_uVwRfiiflIzQnoSjHM24QH4wxOqed4jY9wh4qJ20k41TK2AumI380ZRf18ler7moar6CBJXaXKtNR4oN9BDq-3G1x9lPywVMXMFJvNTRA6wfvBntSWTRad8R_BIQ0Hd9zjQEugNBC8qkhRhtazk48HuAZJVnAZVBSDtj05UM-_dqMS8uOIrj0kU1-2Q1S27BnvR8YnEjMn5WH4Z3m1Ybrjd_R0Nawp33NEO_FeNk1j1iId1_a1bz5TgAVlo85clzBPtktUa_26"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Science</span>
+<h4 class="font-headline font-bold text-on-surface text-base">Deep Sea Echoes</h4>
+<p class="text-on-surface-variant font-body text-xs mt-1 mb-3 line-clamp-1">Listen to the mysterious signals coming from the Mariana Trench.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-primary-container text-[10px] font-bold rounded-full">950L</span>
+<span class="text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> 18 min read
+                            </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-[#d4fffb]/80 dark:bg-teal-950/80 backdrop-blur-md rounded-t-[2rem] shadow-[0_-20px_40px_rgba(0,53,51,0.06)]">
+<a class="flex flex-col items-center justify-center text-[#006B5E] dark:text-teal-400 opacity-70 hover:opacity-100 transition-opacity active:scale-98 duration-200" href="#" onclick="location.href='dashboard.html'; return false;">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#99ecdb] dark:bg-teal-800 text-[#003533] dark:text-teal-50 rounded-full px-5 py-2 active:scale-98 duration-200" href="#" onclick="location.href='library.html'; return false;">
+<span class="material-symbols-outlined" data-icon="import_contacts" style="font-variation-settings: 'FILL' 1;">import_contacts</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#006B5E] dark:text-teal-400 opacity-70 hover:opacity-100 transition-opacity active:scale-98 duration-200" href="#" onclick="location.href='progress.html'; return false;">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Lexend'] font-medium text-[12px]">Progress</span>
+</a>
+</nav>
+</body></html>
